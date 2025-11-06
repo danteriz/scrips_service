@@ -1,7 +1,8 @@
 #!/bin/bash
 set -e
 
-read -p "Введите имя для worker-ноды: " HOSTNAME_
+read -p "Укажите имя для worker-ноды: " HOSTNAME_
+echp "Выполните команду на master-ноде:  kubeadm token create --print-join-command"
 read -p "Введите команду с master-ноды для присоединения worker-ноды: " TOKEN_KUB
 
 systemctl stop kubelet || true
@@ -17,7 +18,7 @@ fuser -k 10250/tcp || true
 
 apt update
 apt upgrade -y
-hostnamectl set-hostname $HOSTNAME_.k8s.local
+hostnamectl set-hostname $HOSTNAME_
 swapoff -a
 sed -i '/ swap / s/^/#/' /etc/fstab
 apt install -y apt-transport-https ca-certificates curl gnupg lsb-release
@@ -43,4 +44,4 @@ systemctl daemon-reload
 systemctl enable kubelet
 systemctl start kubelet
 $TOKEN_KUB
-
+reboot -f
