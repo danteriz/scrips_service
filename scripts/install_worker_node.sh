@@ -2,7 +2,7 @@
 set -e
 
 read -p "Укажите имя для worker-ноды: " HOSTNAME_
-echp "Выполните команду на master-ноде:  kubeadm token create --print-join-command"
+echo "Выполните команду на master-ноде:  kubeadm token create --print-join-command"
 read -p "Введите команду с master-ноды для присоединения worker-ноды: " TOKEN_KUB
 
 systemctl stop kubelet || true
