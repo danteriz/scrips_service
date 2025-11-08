@@ -4,11 +4,6 @@ set -e
 read -p "Укажите какой порт использовать: " PORT_
 read -p "Укажите публичный ключ: " KAY_PUB_
 
-
-
-
-
-
 if [ "$USER" = "root" ]; then
     : ${SUDO:=""}
 else
