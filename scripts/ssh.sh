@@ -16,7 +16,9 @@ EOF
 mapfile -t USERS < <(getent passwd | awk -F: '$3 >= 1000 && $3 < 65534 && $1 != "root" {print $1}')
 for USER_ in "${USERS[@]}"; do
     $SUDO touch /home/$USER_/.ssh/authorized_keys
-    $SUDO echo "$KAY_PUB_" > /home/$USER_/.ssh/authorized_keys
+    $SUDO tee -a /home/$USER_/.ssh/authorized_keys << EOF
+    $KAY_PUB_
+    EOF
 done
 
 
