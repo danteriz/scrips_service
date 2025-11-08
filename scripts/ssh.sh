@@ -9,16 +9,18 @@ if [ "$USER" = "root" ]; then
 else
     : ${SUDO:="sudo"}
 fi
+$SUDO rm -r /root/.ssh/authorized_keys
 $SUDO touch /root/.ssh/authorized_keys
 $SUDO tee -a /root/.ssh/authorized_keys << EOF
 $KAY_PUB_
 EOF
 mapfile -t USERS < <(getent passwd | awk -F: '$3 >= 1000 && $3 < 65534 && $1 != "root" {print $1}')
 for USER_ in "${USERS[@]}"; do
+    $SUDO rm -r /home/$USER_/.ssh/authorized_keys
     $SUDO touch /home/$USER_/.ssh/authorized_keys
     $SUDO tee -a /home/$USER_/.ssh/authorized_keys << EOF
-    $KAY_PUB_
-    EOF
+$KAY_PUB_
+EOF
 done
 
 $SUDO rm -r /etc/ssh/sshd_config.d/*
