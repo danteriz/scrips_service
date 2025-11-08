@@ -1,17 +1,26 @@
 #!/bin/bash
 set -e
 
+read -p "Укажите какой порт использовать: " PORT_
 read -p "Укажите публичный ключ: " KAY_PUB_
-read -p "Укажите какой порт использовать: " 
+
+
+
+
 
 
 if [ "$USER" = "root" ]; then
     : ${SUDO:=""}
-    $SUDO cp /root/.ssh/authorized_keys $HOME/.ssh/
 else
     : ${SUDO:="sudo"}
-    $SUDO cp $HOME/.ssh/authorized_keys /root/.ssh/
 fi
+$SUDO touch root/.ssh/authorized_keys
+$SUDO echo "$KAY_PUB_" > root/.ssh/authorized_keys
+mapfile -t USERS < <(getent passwd | awk -F: '$3 >= 1000 && $3 < 65534 && $1 != "root" {print $1}')
+for USER_ in "${USERS[@]}"; do
+    $SUDO touch /home/$USER_/.ssh/authorized_keys
+    $SUDO echo "$KAY_PUB_" > /home/$USER_/.ssh/authorized_keys
+done
 
 
 $SUDO rm -r /etc/ssh/sshd_config.d/*
