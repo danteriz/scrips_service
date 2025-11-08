@@ -21,7 +21,6 @@ for USER_ in "${USERS[@]}"; do
     EOF
 done
 
-
 $SUDO rm -r /etc/ssh/sshd_config.d/*
 $SUDO touch /etc/ssh/sshd_config.d/60-cloudimg-settings.conf
 $SUDO chmod 755 /etc/ssh/sshd_config.d/60-cloudimg-settings.conf
@@ -37,5 +36,3 @@ EOF
 $SUDO systemctl stop ssh.socket
 $SUDO systemctl disable ssh.socket
 $SUDO systemctl restart ssh
-
-echo $KAY_PUB_ > /root/.ssh/
