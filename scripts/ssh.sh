@@ -9,21 +9,21 @@ if [ "$USER" = "root" ]; then
 else
     : ${SUDO:="sudo"}
 fi
-$SUDO rm -r /root/.ssh/authorized_keys
+$SUDO rm -rf /root/.ssh/authorized_keys 2>/dev/null || true
 $SUDO touch /root/.ssh/authorized_keys
 $SUDO tee -a /root/.ssh/authorized_keys << EOF
 $KAY_PUB_
 EOF
 mapfile -t USERS < <(getent passwd | awk -F: '$3 >= 1000 && $3 < 65534 && $1 != "root" {print $1}')
 for USER_ in "${USERS[@]}"; do
-    $SUDO rm -r /home/$USER_/.ssh/authorized_keys
+    $SUDO rm -rf /home/$USER_/.ssh/authorized_keys 2>/dev/null || true
     $SUDO touch /home/$USER_/.ssh/authorized_keys
     $SUDO tee -a /home/$USER_/.ssh/authorized_keys << EOF
 $KAY_PUB_
 EOF
 done
 
-$SUDO rm -r /etc/ssh/sshd_config.d/*
+$SUDO rm -rf /etc/ssh/sshd_config.d/* 2>/dev/null || true
 $SUDO touch /etc/ssh/sshd_config.d/60-cloudimg-settings.conf
 $SUDO chmod 755 /etc/ssh/sshd_config.d/60-cloudimg-settings.conf
 $SUDO tee -a /etc/ssh/sshd_config.d/60-cloudimg-settings.conf << EOF
