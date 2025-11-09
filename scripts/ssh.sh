@@ -38,3 +38,4 @@ EOF
 $SUDO systemctl stop ssh.socket
 $SUDO systemctl disable ssh.socket
 $SUDO systemctl restart ssh
+$SUDO systemctl enable ssh
