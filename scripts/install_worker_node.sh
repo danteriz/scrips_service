@@ -28,8 +28,7 @@ $SUDO apt upgrade -y
 $SUDO hostnamectl set-hostname $HOSTNAME_
 $SUDO swapoff -a
 $SUDO sed -i '/ swap / s/^/#/' /etc/fstab
-$SUDO apt install -y apt-transport-https ca-certificates curl gnupg lsb-release
-$SUDO apt install -y containerd
+$SUDO apt install -y apt-transport-https ca-certificates curl gnupg lsb-release conntrack socat ebtables ethtool ipset ipvsadm containerd
 $SUDO mkdir -p /etc/containerd
 $SUDO containerd config default | $SUDO tee /etc/containerd/config.toml >/dev/null
 $SUDO sed -i 's/SystemdCgroup = false/SystemdCgroup = true/' /etc/containerd/config.toml
